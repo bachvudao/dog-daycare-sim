@@ -1,0 +1,52 @@
+:root {
+  --grass-light: #a8d575;
+  --grass-dark: #8cb660;
+  --sky: #cceeff;
+  --panel-bg: rgba(255, 255, 255, 0.9);
+  --accent: #ff9800;
+  --text: #333;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--sky);
+  color: var(--text);
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: transform 0.1s;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+@keyframes fadeOutUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.leaving {
+  animation: fadeOutUp 2s forwards;
+  pointer-events: none;
+}
