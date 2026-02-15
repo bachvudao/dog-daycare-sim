@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import type { GameUpgrades } from '../hooks/useGameLogic';
 import type { Worker } from '../types/worker';
 import { generateWorker } from '../types/worker';
@@ -13,6 +14,7 @@ interface ShopProps {
 }
 
 export const Shop: React.FC<ShopProps> = ({ money, upgrades, buyUpgrade, onClose, hireWorker, workers = [] }) => {
+    const { t } = useLanguage();
     const [candidate, setCandidate] = useState<Worker | null>(null);
 
     useEffect(() => {
@@ -22,9 +24,9 @@ export const Shop: React.FC<ShopProps> = ({ money, upgrades, buyUpgrade, onClose
     }, [candidate, workers.length]);
 
     const ITEMS = [
-        { id: 'premiumFood', name: 'Premium Food', desc: 'Feeding is 2x effective', cost: 50, icon: '🥩' },
-        { id: 'fancyToy', name: 'Fancy Toy', desc: 'Playing is 2x effective', cost: 50, icon: '🧸' },
-        { id: 'comfyBed', name: 'Comfy Bed', desc: 'Resting is 2x effective', cost: 100, icon: '🛏️' },
+        { id: 'premiumFood', name: t('upgrade.premiumFood'), desc: t('upgrade.premiumFood.desc'), cost: 50, icon: '🥩' },
+        { id: 'fancyToy', name: t('upgrade.fancyToy'), desc: t('upgrade.fancyToy.desc'), cost: 50, icon: '🧸' },
+        { id: 'comfyBed', name: t('upgrade.comfyBed'), desc: t('upgrade.comfyBed.desc'), cost: 100, icon: '🛏️' },
     ] as const;
 
     const handleHire = () => {
@@ -54,25 +56,25 @@ export const Shop: React.FC<ShopProps> = ({ money, upgrades, buyUpgrade, onClose
                 boxShadow: '0 20px 40px rgba(0,0,0,0.3)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                    <h2 style={{ margin: 0, fontSize: '32px' }}>Department Store</h2>
+                    <h2 style={{ margin: 0, fontSize: '32px' }}>{t('shop.title')}</h2>
                     <button onClick={onClose} style={{
                         background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer'
                     }}>✕</button>
                 </div>
 
                 <div style={{ marginBottom: '24px', fontSize: '18px', fontWeight: 'bold', color: '#2e7d32' }}>
-                    Balance: ${money}
+                    {t('shop.balance')}: ${money}
                 </div>
 
                 {/* Staff Section */}
-                <h3 style={{ borderBottom: '2px solid #eee', paddingBottom: '8px', marginBottom: '16px' }}>Staff</h3>
+                <h3 style={{ borderBottom: '2px solid #eee', paddingBottom: '8px', marginBottom: '16px' }}>{t('shop.staff')}</h3>
                 <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
 
                     {/* Current Staff List */}
                     <div style={{ flex: 1 }}>
-                        <h4 style={{ margin: '0 0 8px 0' }}>Current Team ({workers.length})</h4>
+                        <h4 style={{ margin: '0 0 8px 0' }}>{t('shop.current_team')} ({workers.length})</h4>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', maxHeight: '100px', overflowY: 'auto' }}>
-                            {workers.length === 0 && <p style={{ fontSize: '13px', color: '#999' }}>No staff hired yet.</p>}
+                            {workers.length === 0 && <p style={{ fontSize: '13px', color: '#999' }}>{t('shop.no_staff')}</p>}
                             {workers.map(w => (
                                 <div key={w.id} title={w.name} style={{
                                     fontSize: '24px', background: '#eee', borderRadius: '50%', padding: '4px', cursor: 'help'
@@ -117,13 +119,13 @@ export const Shop: React.FC<ShopProps> = ({ money, upgrades, buyUpgrade, onClose
                                     width: '100%'
                                 }}
                             >
-                                Hire (${candidate.cost})
+                                {t('shop.hire')} (${candidate.cost})
                             </button>
                         </div>
                     )}
                 </div>
 
-                <h3 style={{ borderBottom: '2px solid #eee', paddingBottom: '8px', marginBottom: '16px' }}>Upgrades</h3>
+                <h3 style={{ borderBottom: '2px solid #eee', paddingBottom: '8px', marginBottom: '16px' }}>{t('shop.upgrades')}</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     {ITEMS.map(item => {
                         const isOwned = upgrades[item.id as keyof GameUpgrades];
@@ -144,7 +146,7 @@ export const Shop: React.FC<ShopProps> = ({ money, upgrades, buyUpgrade, onClose
                                     <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>{item.desc}</p>
                                 </div>
                                 {isOwned ? (
-                                    <div style={{ fontWeight: 'bold', color: '#2e7d32' }}>Owned</div>
+                                    <div style={{ fontWeight: 'bold', color: '#2e7d32' }}>{t('shop.owned')}</div>
                                 ) : (
                                     <button
                                         onClick={() => buyUpgrade(item.id as keyof GameUpgrades, item.cost)}

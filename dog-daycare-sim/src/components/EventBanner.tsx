@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import type { GameEvent } from '../types/events';
 
 interface EventBannerProps {
@@ -6,6 +7,7 @@ interface EventBannerProps {
 }
 
 export const EventBanner: React.FC<EventBannerProps> = ({ event }) => {
+    const { t } = useLanguage();
     return (
         <div style={{
             backgroundColor: event.color,
@@ -22,8 +24,8 @@ export const EventBanner: React.FC<EventBannerProps> = ({ event }) => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <span style={{ fontSize: '32px' }}>{event.icon}</span>
                 <div>
-                    <h3 style={{ margin: 0, fontSize: '20px', fontWeight: 'bold' }}>{event.name}</h3>
-                    <p style={{ margin: 0, opacity: 0.9 }}>{event.description}</p>
+                    <h3 style={{ margin: 0, fontSize: '20px', fontWeight: 'bold' }}>{t(`event.${event.type}.name`)}</h3>
+                    <p style={{ margin: 0, opacity: 0.9 }}>{t(`event.${event.type}.desc`)}</p>
                 </div>
             </div>
             <div style={{

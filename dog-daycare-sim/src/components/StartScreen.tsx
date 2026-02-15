@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import heroImage from '../assets/hero.png';
 
 interface StartScreenProps {
@@ -24,6 +25,7 @@ const PRESETS = [
 ];
 
 export const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
+    const { t } = useLanguage();
     const [name, setName] = useState(() => PRESETS[Math.floor(Math.random() * PRESETS.length)]);
 
     const handleRandomize = () => {
@@ -76,11 +78,11 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
                     marginBottom: '16px',
                     fontFamily: '"Comic Sans MS", "Chalkboard SE", sans-serif'
                 }}>
-                    Welcome Boss! 🐾
+                    {t('start.welcome')}
                 </h1>
 
                 <p style={{ color: '#666', marginBottom: '24px', fontSize: '18px' }}>
-                    Ready to open your dream daycare? Give it a name!
+                    {t('start.subtitle')}
                 </p>
 
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -89,7 +91,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            placeholder="Daycare Name"
+                            placeholder={t('start.placeholder')}
                             style={{
                                 flex: 1,
                                 padding: '16px',
@@ -111,7 +113,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
                                 background: '#f0f0f0',
                                 cursor: 'pointer'
                             }}
-                            title="Randomize Name"
+                            title={t('start.randomize')}
                         >
                             🎲
                         </button>
@@ -134,7 +136,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
                             boxShadow: '0 8px 16px rgba(76, 175, 80, 0.3)'
                         }}
                     >
-                        Open for Business! 🚀
+                        {t('start.open')}
                     </button>
                 </form>
             </div>

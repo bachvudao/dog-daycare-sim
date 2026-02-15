@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import type { Dog } from '../types/game';
 import { BREEDS } from '../types/breeds';
 import type { Breed } from '../types/breeds';
@@ -42,6 +43,7 @@ const StatBar = ({ label, value, color }: { label: string; value: number; color:
 );
 
 export const DogCard: React.FC<DogCardProps> = ({ dog, onInteract, feedCost = 0, onPayout }) => {
+    const { t } = useLanguage();
     const cardRef = useRef<HTMLDivElement>(null);
     const payoutTriggeredRef = useRef(false);
 
@@ -148,7 +150,7 @@ export const DogCard: React.FC<DogCardProps> = ({ dog, onInteract, feedCost = 0,
                     </div>
                     {/* Trait Badge */}
                     {dog.trait !== 'NONE' && (
-                        <div title={TRAITS[dog.trait].description} style={{
+                        <div title={t(`trait.${dog.trait}.desc`)} style={{
                             backgroundColor: 'rgba(255,255,255,0.2)',
                             backdropFilter: 'blur(4px)',
                             padding: '4px 8px',
@@ -162,29 +164,29 @@ export const DogCard: React.FC<DogCardProps> = ({ dog, onInteract, feedCost = 0,
                             cursor: 'help'
                         }}>
                             <span style={{ fontSize: '16px' }}>{TRAITS[dog.trait].icon}</span>
-                            <span>{TRAITS[dog.trait].name}</span>
+                            <span>{t(`trait.${dog.trait}.name`)}</span>
                         </div>
                     )}
                 </div>
 
                 <div style={{ marginBottom: '16px' }}>
-                    <StatBar label="Hunger" value={dog.hunger} color="#ffab91" />
-                    <StatBar label="Happiness" value={dog.happiness} color="#81d4fa" />
-                    <StatBar label="Energy" value={dog.energy} color="#a5d6a7" />
+                    <StatBar label={t('dog.hunger')} value={dog.hunger} color="#ffab91" />
+                    <StatBar label={t('dog.happiness')} value={dog.happiness} color="#81d4fa" />
+                    <StatBar label={t('dog.energy')} value={dog.energy} color="#a5d6a7" />
                 </div>
 
                 <div style={{ display: 'flex', gap: '8px' }}>
                     <button onClick={(e) => onInteract('FEED', e)} disabled={dog.state !== 'IDLE'}
                         style={{ flex: 1, padding: '10px 0', borderRadius: '8px', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(5px)', border: '1px solid rgba(255,255,255,0.4)', color: 'white', fontWeight: '600' }}>
-                        Feed (${feedCost})
+                        {t('dog.feed')} (${feedCost})
                     </button>
                     <button onClick={(e) => onInteract('PLAY', e)} disabled={dog.state !== 'IDLE'}
                         style={{ flex: 1, padding: '10px 0', borderRadius: '8px', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(5px)', border: '1px solid rgba(255,255,255,0.4)', color: 'white', fontWeight: '600' }}>
-                        Play
+                        {t('dog.play')}
                     </button>
                     <button onClick={(e) => onInteract('SLEEP', e)} disabled={dog.state !== 'IDLE'}
                         style={{ flex: 1, padding: '10px 0', borderRadius: '8px', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(5px)', border: '1px solid rgba(255,255,255,0.4)', color: 'white', fontWeight: '600' }}>
-                        Rest
+                        {t('dog.sleep')}
                     </button>
                 </div>
             </div>
@@ -202,12 +204,12 @@ export const DogCard: React.FC<DogCardProps> = ({ dog, onInteract, feedCost = 0,
                     zIndex: 30,
                     color: '#333'
                 }}>
-                    <h2 style={{ marginBottom: '12px' }}>Retrieved!</h2>
+                    <h2 style={{ marginBottom: '12px' }}>{t('dog.retrieved')}</h2>
                     <div style={{ fontSize: '56px', marginBottom: '8px' }}>
                         {(dog.hunger > 50 && dog.happiness > 50 && dog.energy > 50) ? '👍' : '👎'}
                     </div>
                     <p style={{ color: '#666', fontWeight: '500' }}>
-                        {(dog.hunger > 50 && dog.happiness > 50 && dog.energy > 50) ? 'Great Job!' : 'Needs Work...'}
+                        {(dog.hunger > 50 && dog.happiness > 50 && dog.energy > 50) ? t('dog.great') : t('dog.needs_work')}
                     </p>
                     {dog.payout && (
                         <div style={{

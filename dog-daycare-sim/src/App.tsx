@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useGameLogic } from './hooks/useGameLogic';
+import { useLanguage } from './contexts/LanguageContext';
 import { DogCard } from './components/DogCard';
 import { Shop } from './components/Shop';
 import { AddSlotCard } from './components/AddSlotCard';
@@ -16,6 +17,7 @@ function App() {
     workers, hireWorker, hasStarted, daycareName, startGame, resetGame, activeEvent,
     isPlaying, setIsPlaying
   } = useGameLogic();
+  const { t } = useLanguage();
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [floatingTexts, setFloatingTexts] = useState<FloatingTextItem[]>([]);
@@ -74,12 +76,12 @@ function App() {
         backdropFilter: 'blur(4px)'
       }}>
         <h1 style={{ fontSize: '24px', fontWeight: '800', color: '#333', margin: 0 }}>
-          {daycareName || 'Dog Daycare Tycoon'} 🐶
+          {daycareName || t('app.title')} 🐶
         </h1>
         <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
           <div style={{ fontSize: '18px', fontWeight: '600' }}>
             <span style={{ color: '#2e7d32', marginRight: '16px' }}>💰 ${money.toLocaleString()}</span>
-            <span>Dogs: {dogs.length}/{maxDogs}</span>
+            <span>{t('app.dogs')}: {dogs.length}/{maxDogs}</span>
           </div>
           <button
             onClick={() => setIsShopOpen(true)}
@@ -97,7 +99,7 @@ function App() {
               gap: '4px'
             }}
           >
-            🛒 Shop
+            🛒 {t('app.shop')}
           </button>
           <button
             onClick={() => setIsSettingsOpen(true)}
@@ -120,7 +122,7 @@ function App() {
           </button>
           <button
             onClick={() => {
-              if (window.confirm("Are you sure you want to start a new game? Current progress will be lost!")) {
+              if (window.confirm(t('app.reset.confirm'))) {
                 resetGame();
               }
             }}
@@ -137,7 +139,7 @@ function App() {
             }}
             title="Start New Game"
           >
-            🔄 Reset
+            🔄 {t('app.reset')}
           </button>
         </div>
       </header>
@@ -167,12 +169,12 @@ function App() {
                 const y = rect.top + window.scrollY;
 
                 if (action === 'FEED') {
-                  spawnText(x, y - 20, 'Yummy!', '#ffab91');
+                  spawnText(x, y - 20, t('floating.yummy'), '#ffab91');
                   spawnText(x + 50, y - 40, `-$${feedCost}`, '#ef5350');
                 } else if (action === 'PLAY') {
-                  spawnText(x, y - 20, 'Fun!', '#81d4fa');
+                  spawnText(x, y - 20, t('floating.fun'), '#81d4fa');
                 } else if (action === 'SLEEP') {
-                  spawnText(x, y - 20, 'Zzz...', '#a5d6a7');
+                  spawnText(x, y - 20, t('floating.zzz'), '#a5d6a7');
                 }
               }
             }}

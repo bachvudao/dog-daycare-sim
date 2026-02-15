@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface AddSlotCardProps {
     cost: number;
@@ -7,6 +8,7 @@ interface AddSlotCardProps {
 }
 
 export const AddSlotCard: React.FC<AddSlotCardProps> = ({ cost, canAfford, onBuy }) => {
+    const { t } = useLanguage();
     return (
         <div
             onClick={() => canAfford && onBuy()}
@@ -40,7 +42,7 @@ export const AddSlotCard: React.FC<AddSlotCardProps> = ({ cost, canAfford, onBuy
             }}>
                 +
             </div>
-            <h3 style={{ margin: '0 0 8px 0', color: '#555' }}>Add Slot</h3>
+            <h3 style={{ margin: '0 0 8px 0', color: '#555' }}>{t('add_slot.card_title')}</h3>
             <div style={{
                 backgroundColor: canAfford ? '#e8f5e9' : '#f5f5f5',
                 color: canAfford ? '#2e7d32' : '#757575',
