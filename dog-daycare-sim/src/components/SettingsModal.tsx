@@ -7,9 +7,10 @@ interface SettingsModalProps {
     onClose: () => void;
     isPlaying: boolean;
     onTogglePause: () => void;
+    onReplayTutorial: () => void;
 }
 
-export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, isPlaying, onTogglePause }) => {
+export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, isPlaying, onTogglePause, onReplayTutorial }) => {
     const { language, setLanguage, t } = useLanguage();
     const [showLanguages, setShowLanguages] = useState(false);
 
@@ -154,6 +155,30 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                             </div>
                         </div>
                     )}
+
+                    {/* Replay Tutorial Button */}
+                    <button
+                        onClick={onReplayTutorial}
+                        style={{
+                            width: '100%',
+                            marginTop: '16px',
+                            padding: '16px',
+                            fontSize: '20px',
+                            fontWeight: 'bold',
+                            color: '#555',
+                            backgroundColor: '#e0e0e0',
+                            border: 'none',
+                            borderRadius: '12px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '12px',
+                            boxShadow: '0 4px 0 #bdbdbd'
+                        }}
+                    >
+                        🎓 Tutorial
+                    </button>
                 </div>
 
                 <div>

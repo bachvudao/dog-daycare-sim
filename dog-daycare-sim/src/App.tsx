@@ -10,6 +10,7 @@ import confetti from 'canvas-confetti';
 import { StartScreen } from './components/StartScreen';
 import { EventBanner } from './components/EventBanner';
 import { SettingsModal } from './components/SettingsModal';
+import { TutorialOverlay } from './components/TutorialOverlay';
 
 function App() {
   const {
@@ -20,6 +21,19 @@ function App() {
   const { t } = useLanguage();
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(() => {
+    return localStorage.getItem('hasSeenTutorial') !== 'true';
+  });
+
+  const closeTutorial = () => {
+    setShowTutorial(false);
+    localStorage.setItem('hasSeenTutorial', 'true');
+  };
+
+  const openTutorial = () => {
+    setShowTutorial(true);
+    setIsSettingsOpen(false);
+  };
   const [floatingTexts, setFloatingTexts] = useState<FloatingTextItem[]>([]);
 
   const slotCost = 500 * maxDogs;
@@ -218,12 +232,15 @@ function App() {
         />
       )}
 
+      {showTutorial && <TutorialOverlay onClose={closeTutorial} />}
+
       {/* Settings Modal */}
       <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
         isPlaying={isPlaying}
         onTogglePause={() => setIsPlaying(!isPlaying)}
+        onReplayTutorial={openTutorial}
       />
     </div>
   );

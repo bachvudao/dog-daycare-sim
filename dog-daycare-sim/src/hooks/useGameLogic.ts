@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import type { Dog } from '../types/game';
 import { useInterval } from './useInterval';
 import { BREEDS } from '../types/breeds';
@@ -80,11 +80,11 @@ export const useGameLogic = () => {
     });
 
     const [spawnTimer, setSpawnTimer] = useState<number | null>(null);
-
-
+    const isResetting = useRef(false);
 
     // Auto-Save Effect
     useEffect(() => {
+        if (isResetting.current) return;
         // workers are serializable
         saveGame({ dogs, money, upgrades, maxDogs, workers, hasStarted, daycareName });
     }, [dogs, money, upgrades, maxDogs, workers, hasStarted, daycareName]);
@@ -95,9 +95,11 @@ export const useGameLogic = () => {
     };
 
     const resetGame = useCallback(() => {
+        isResetting.current = true;
+        setIsPlaying(false);
         clearGame();
         // Force reload to ensure clean state
-        window.location.reload();
+        setTimeout(() => window.location.reload(), 100);
     }, []);
 
     // Helper: Generate a new random dog
