@@ -195,17 +195,25 @@ function App() {
             feedCost={feedCost}
             assignedWorker={workers.find(w => w.id === dog.workerId)}
             onPayout={(amount, rect) => {
-              // Confetti needs VIEWPORT coordinates (0-1 range relative to window)
-              // Floating text needs PAGE coordinates (pixels relative to document)
+              const midX = rect.left + rect.width / 2;
+              const midY = rect.top + rect.height / 2;
+              const xPage = midX + window.scrollX;
+              const yPage = rect.top + window.scrollY;
 
-              const xViewport = rect.left + rect.width / 2;
-              const yViewport = rect.top + rect.height / 2;
+              triggerExplosion(midX, midY);
 
-              const xPage = xViewport + window.scrollX;
-              const yPage = rect.top + window.scrollY; // Top of card for text
-
-              triggerExplosion(xViewport, yViewport);
-              spawnText(xPage, yPage - 50, `+$${amount}`, '#ffd700');
+              // VIP Payout Logic
+              if (dog.isVIP) {
+                if (amount > 0) {
+                  spawnText(xPage, yPage - 80, '👑 VIP BONUS!', '#FFD700');
+                  spawnText(xPage, yPage - 50, `+$${amount}`, '#FFD700');
+                } else {
+                  spawnText(xPage, yPage - 80, '💔 VIP ANGRY!', '#f44336');
+                  spawnText(xPage, yPage - 50, `-$${Math.abs(amount)}`, '#f44336');
+                }
+              } else {
+                spawnText(xPage, yPage - 50, `+$${amount}`, '#ffd700');
+              }
             }}
           />
         ))}

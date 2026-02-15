@@ -105,20 +105,30 @@ export const useGameLogic = () => {
     // Helper: Generate a new random dog
     const generateDog = useCallback((): Dog => {
         const breed = BREEDS[Math.floor(Math.random() * BREEDS.length)];
+
+        // Check for VIP Unlock (Must own all basic upgrades)
+        const allUpgrades = upgrades.premiumFood && upgrades.fancyToy && upgrades.comfyBed;
+        const isVIP = allUpgrades && Math.random() < 0.2; // 20% chance if unlocked
+
+        // VIPs are harder / start with lower stats? Or just high stakes?
+        // Let's make them slightly more demanding (start lower)
+        const baseStat = isVIP ? 40 : 50;
+
         return {
             id: `dog-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             name: getRandomName(),
             breed: breed,
             trait: getRandomTrait(),
-            hunger: 50 + Math.floor(Math.random() * 40),
-            happiness: 50 + Math.floor(Math.random() * 40),
-            energy: 50 + Math.floor(Math.random() * 40),
+            hunger: baseStat + Math.floor(Math.random() * 40),
+            happiness: baseStat + Math.floor(Math.random() * 40),
+            energy: baseStat + Math.floor(Math.random() * 40),
             state: 'IDLE',
             color: '#fff',
             timeRemaining: 15 + Math.floor(Math.random() * 15),
             maxTime: 30,
+            isVIP
         };
-    }, []);
+    }, [upgrades]);
 
     const buyUpgrade = (key: keyof GameUpgrades, cost: number) => {
         if (money >= cost && !upgrades[key]) {
@@ -211,8 +221,14 @@ export const useGameLogic = () => {
                         const traitConfig = TRAITS[dog.trait]?.modifiers || {};
                         if (traitConfig.payout) payout = Math.floor(payout * traitConfig.payout);
 
+                        // VIP Bonus
+                        if (dog.isVIP) payout += 200;
+
                         // Event Bonus
                         if (isAdoption) payout *= 2;
+                    } else {
+                        // VIP Penalty
+                        if (dog.isVIP) payout = -100;
                     }
                     // Force clear workerId on retrieval
                     return { ...dog, timeRemaining: newTimeRemaining, state: 'RETRIEVED' as const, payout, workerId: undefined };

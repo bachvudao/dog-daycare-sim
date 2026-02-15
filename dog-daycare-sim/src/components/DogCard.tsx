@@ -60,21 +60,43 @@ export const DogCard: React.FC<DogCardProps> = ({ dog, onInteract, feedCost = 0,
     return (
         <div
             ref={cardRef}
-            className={dog.state === 'RETRIEVED' ? 'leaving' : ''}
+            className={dog.state === 'RETRIEVED' ? 'leaving' : 'dog-card'}
             style={{
                 position: 'relative',
                 backgroundColor: 'white',
                 borderRadius: '16px',
                 width: '260px',
                 height: '380px',
-                boxShadow: '0 8px 16px rgba(0,0,0,0.15)',
+                boxShadow: dog.isVIP ? '0 8px 32px rgba(255, 215, 0, 0.6)' : '0 8px 16px rgba(0,0,0,0.15)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end', // Push content to bottom
                 overflow: 'hidden',
-                color: 'white'
+                color: 'white',
+                border: dog.isVIP ? '4px solid #FFD700' : 'none',
+                transform: dog.isVIP ? 'scale(1.02)' : 'none',
+                transition: 'all 0.3s ease'
             }}
         >
+            {/* VIP BADGE */}
+            {dog.isVIP && (
+                <div style={{
+                    position: 'absolute',
+                    top: '-12px',
+                    right: '-12px',
+                    backgroundColor: '#FFD700',
+                    color: '#8B8000',
+                    padding: '4px 12px',
+                    borderRadius: '12px',
+                    fontWeight: 'bold',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                    zIndex: 10,
+                    animation: 'bounce 2s infinite'
+                }}>
+                    👑 {t('vip.tag')}
+                </div>
+            )}
+
             {/* Background Sprite Image */}
             <div style={{
                 position: 'absolute',

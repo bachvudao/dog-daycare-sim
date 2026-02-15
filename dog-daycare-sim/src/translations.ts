@@ -92,6 +92,9 @@ export const TRANSLATIONS: { [key in Language]: { [key: string]: string } } = {
         'tutorial.next': 'Next',
         'tutorial.prev': 'Previous',
         'tutorial.finish': 'Let\'s Play!',
+        'vip.alert.title': 'VIP Guest Arrived!',
+        'vip.alert.desc': 'A VIP dog is here! Treat them well for a HUGE bonus, but don\'t fail them!',
+        'vip.tag': 'VIP',
     },
     vi: {
         'app.title': 'Đại Gia Trông Trẻ Chó',
@@ -179,5 +182,8 @@ export const TRANSLATIONS: { [key in Language]: { [key: string]: string } } = {
         'tutorial.next': 'Tiếp',
         'tutorial.prev': 'Trước',
         'tutorial.finish': 'Chơi Thôi!',
+        'vip.alert.title': 'Khách VIP Đã Đến!',
+        'vip.alert.desc': 'Một chú chó VIP đã đến! Chăm sóc tốt để nhận thưởng LỚN, nhưng đừng để họ thất vọng!',
+        'vip.tag': 'VIP',
     }
 };

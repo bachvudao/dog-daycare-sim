@@ -19,6 +19,7 @@ export interface Dog {
   maxTime: number; // total stay duration
   payout?: number; // Calculated payout amount
   workerId?: string; // ID of worker currently attending
+  isVIP?: boolean;
 }
 
 export interface GameConfig {
