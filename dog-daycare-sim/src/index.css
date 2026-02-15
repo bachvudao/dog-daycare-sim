@@ -16,11 +16,15 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: var(--sky);
+  /* background-color: var(--sky); Replaced with pattern */
+  background-image: url('/dog-treats-bg.png');
+  background-repeat: repeat;
+  background-size: 300px;
+  /* Adjust scale of pattern */
   color: var(--text);
-  overflow: hidden;
+  /* overflow: hidden; Removed to allow scrolling */
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 button {

@@ -50,8 +50,8 @@ function App() {
   return (
     <div style={{
       width: '100vw',
-      height: '100vh',
-      backgroundColor: '#ccf2ff', // Sky blue
+      minHeight: '100vh', // Allow growing beyond viewport
+      // backgroundColor: '#ccf2ff', // Removed to show body background
       position: 'relative',
       display: 'flex',
       flexDirection: 'column',
@@ -162,8 +162,9 @@ function App() {
               // Visual Effects logic
               if (e) {
                 const rect = (e.target as HTMLElement).getBoundingClientRect();
-                const x = rect.left + rect.width / 2;
-                const y = rect.top;
+                // For floating text: use page coordinates (rect + scroll)
+                const x = rect.left + rect.width / 2 + window.scrollX;
+                const y = rect.top + window.scrollY;
 
                 if (action === 'FEED') {
                   spawnText(x, y - 20, 'Yummy!', '#ffab91');
@@ -178,10 +179,17 @@ function App() {
             feedCost={feedCost}
             assignedWorker={workers.find(w => w.id === dog.workerId)}
             onPayout={(amount, rect) => {
-              const x = rect.left + rect.width / 2;
-              const y = rect.top + rect.height / 2;
-              triggerExplosion(x, y);
-              spawnText(x, y - 50, `+$${amount}`, '#ffd700');
+              // Confetti needs VIEWPORT coordinates (0-1 range relative to window)
+              // Floating text needs PAGE coordinates (pixels relative to document)
+
+              const xViewport = rect.left + rect.width / 2;
+              const yViewport = rect.top + rect.height / 2;
+
+              const xPage = xViewport + window.scrollX;
+              const yPage = rect.top + window.scrollY; // Top of card for text
+
+              triggerExplosion(xViewport, yViewport);
+              spawnText(xPage, yPage - 50, `+$${amount}`, '#ffd700');
             }}
           />
         ))}
@@ -194,17 +202,7 @@ function App() {
         />
       </div>
 
-      {/* Footer / Ground */}
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: '30%',
-        backgroundColor: '#a8d575',
-        zIndex: -1,
-        borderTop: '8px solid #8cb660'
-      }} />
+
 
       {/* Shop Modal */}
       {isShopOpen && (
